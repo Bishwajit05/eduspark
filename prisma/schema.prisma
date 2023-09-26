@@ -10,8 +10,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Course { 
-  id          String       @id @default(uuid()) @map("_id") @db.ObjectId
+model Course {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
   userId      String
   title       String       @db.String
   description String?      @db.String
@@ -28,13 +28,13 @@ model Course {
 }
 
 model Category {
-  id      String   @id @default(uuid()) @map("_id") @db.ObjectId
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
   name    String   @unique
   courses Course[]
 }
 
 model Attachment {
-  id   String @id @default(uuid()) @map("_id") @db.ObjectId
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   url  String @db.String
 
