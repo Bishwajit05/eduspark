@@ -6,6 +6,8 @@ import { redirect } from "next/navigation";
 import React from "react";
 import TitleForm from "./_components/titleForm";
 import DescriptionForm from "./_components/descriptioForm";
+import ImageForm from "./_components/imageForm";
+import CategoryForm from "./_components/categoryForm";
 
 const COurseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -13,6 +15,14 @@ const COurseIdPage = async ({ params }: { params: { courseId: string } }) => {
     return redirect("/");
   }
   const course = await db.course.findUnique({ where: { id: params.courseId } });
+
+  const categories = await db.category.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  console.log("category", categories);
 
   if (!course) {
     return redirect("/");
@@ -48,6 +58,16 @@ const COurseIdPage = async ({ params }: { params: { courseId: string } }) => {
           </div>
           <TitleForm initialValue={course} courseId={course.id} />
           <DescriptionForm initialValue={course} courseId={course.id} />
+          <ImageForm initialValue={course} courseId={course.id} />
+
+          <CategoryForm
+            initialValue={course}
+            courseId={course.id}
+            categories={categories.map((category) => ({
+              label: category.name,
+              value: category.id,
+            }))}
+          />
         </div>
       </div>
     </div>
